@@ -1,4 +1,4 @@
-package evolution.api;
+package evolution.api.rest.template;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
