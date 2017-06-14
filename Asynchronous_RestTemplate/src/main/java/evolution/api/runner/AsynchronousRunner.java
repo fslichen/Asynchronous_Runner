@@ -1,6 +1,5 @@
 package evolution.api.runner;
 
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -12,9 +11,9 @@ public class AsynchronousRunner {
 	}
 	
 	public <T> void run(final Executor executor, final Success success, final Failure failure) {
-		executorService.submit(new Callable<T>() {
+		executorService.submit(new Runnable() {
 			@Override
-			public T call() throws Exception {
+			public void run() {
 				try {
 					executor.run();
 					success.run();
@@ -22,7 +21,6 @@ public class AsynchronousRunner {
 					e.printStackTrace();
 					failure.run();
 				}
-				return null;
 			}
 		});
 	}

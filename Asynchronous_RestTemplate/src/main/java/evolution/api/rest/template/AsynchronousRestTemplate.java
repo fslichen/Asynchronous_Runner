@@ -1,22 +1,28 @@
 package evolution.api.rest.template;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-public class AsynchronousRunner {
+public class AsynchronousRestTemplate {
 	private FuturePool futurePool;
 	private RestTemplate restTemplate;
-	private ExecutorService executorService;
+	private ScheduledExecutorService executorService;
 	
-	public AsynchronousRunner() {
+	public AsynchronousRestTemplate() {
 		this.restTemplate = new RestTemplate();
-		this.executorService = Executors.newCachedThreadPool();
+		this.executorService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
 		this.futurePool = new FuturePool();
+	}
+	
+	public AsynchronousRestTemplate(int timeOut) {
+		this();
+		this.futurePool.setMaxTaskDuration(timeOut);
 	}
 	
 	public <T> void post(final String url, final Object request, final Class<T> clazz, 
